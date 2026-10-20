@@ -1,0 +1,40 @@
+name: Construire APK ERT Inventory
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Recuperer les fichiers du depot
+        uses: actions/checkout@v4
+
+      - name: Extraire le projet Flutter
+        run: unzip -oq ERT_Inventory_V1_Projet_Android.zip
+
+      - name: Installer Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Creer les fichiers Android
+        run: flutter create --platforms android --org org.ert --no-pub .
+
+      - name: Installer les dependances
+        run: flutter pub get
+
+      - name: Compiler APK de test
+        run: flutter build apk --debug
+
+      - name: Mettre l'APK a disposition
+        uses: actions/upload-artifact@v4
+        with:
+          name: ERT-Inventory-APK
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          retention-days: 30
