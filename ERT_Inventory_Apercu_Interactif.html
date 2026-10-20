@@ -1,0 +1,845 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>ERT Inventory | Aperçu interactif</title>
+<style>
+:root{--navy:#112239;--blue:#1b3451;--red:#e15256;--green:#168a70;--text:#26344a;--muted:#718197;--bg:#f2f5f8}*{box-sizing:border-box}body{margin:0;background:var(--bg);font:14px system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text)}header{background:var(--navy);color:#fff;position:sticky;top:0;z-index:3;box-shadow:0 5px 16px #10223b25}header .head{max-width:950px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:17px 18px}header .brand{font-size:19px;font-weight:800;letter-spacing:1.4px}header .brand span{color:#ff7377}header button{border:1px solid #54667c;background:transparent;color:#fff;border-radius:10px;padding:9px 12px;cursor:pointer}main{max-width:950px;margin:0 auto;padding:20px 15px 90px}nav{position:fixed;bottom:0;z-index:4;background:#fff;left:0;right:0;border-top:1px solid #e0e6ed;display:flex;justify-content:center;box-shadow:0 -3px 17px #34415912}nav button{background:transparent;border:0;color:#6d7b91;padding:13px 15px;font-size:12px;font-weight:700;cursor:pointer;min-width:100px}nav button.active{color:var(--navy);border-top:3px solid var(--red)}h1{margin:0 0 10px;font-size:25px;line-height:1.2;color:var(--navy)}h2{font-size:19px;color:var(--navy);margin:24px 0 12px}.hero{background:linear-gradient(120deg,#112239,#294968);border-radius:20px;padding:25px;color:#fff}.hero .tag{font-size:11px;letter-spacing:2px;color:#b1d0e9;font-weight:800}.hero h1{color:#fff;font-size:30px;margin:11px 0}.hero p{color:#d4e0ec}.stats{display:flex;gap:10px;margin-top:23px}.stat{flex:1;border-radius:12px;background:#ffffff16;padding:13px;min-width:0}.stat strong{display:block;font-size:25px}.stat span{font-size:11px;color:#d7e1eb}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:12px}.vehicle,.card{background:#fff;border:1px solid #e7edf2;border-radius:17px;padding:17px;box-shadow:0 2px 9px #182d4508}.vehicle{display:flex;gap:13px;align-items:center;cursor:pointer}.vehicle.disabled{opacity:.62}.vehicle b{font-size:19px;color:var(--navy)}.vehicle small{display:block;margin-top:5px;color:#718197}.vehicle .icon{font-size:26px;width:57px;height:57px;border-radius:12px;background:#e8f1f8;display:grid;place-items:center}.vehicle .info{flex:1}.pill{border-radius:30px;background:#dff6ee;color:var(--green);font-size:10px;font-weight:800;padding:6px 9px;white-space:nowrap}.pill.wait{background:#eef0f2;color:#7c8a99}.pill.red{color:var(--red);background:#ffedef}.small{color:var(--muted);font-size:12px}.back{border:0;background:transparent;color:var(--navy);font-weight:800;cursor:pointer;padding:9px 0}.checkrow{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;border-top:1px solid #edf1f5;padding:12px 0}.checkrow:first-child{border-top:none}.button{background:var(--navy);color:white;border:0;border-radius:11px;padding:12px 17px;cursor:pointer;font-weight:750}.button.red{background:var(--red)}.button.light{background:#ecf1f6;color:var(--navy)}.button.green{background:var(--green)}button:disabled{opacity:.5;cursor:default}.input{width:100%;padding:12px;border:1px solid #d1dce8;border-radius:9px;font:inherit;margin:5px 0 12px}select.input{background:#fff}.opts{display:flex;gap:8px;flex-wrap:wrap;margin:11px 0 15px}.opts button{background:#f0f4f7;border:1px solid #e1e8ee;color:var(--navy);border-radius:100px;padding:9px 13px;cursor:pointer;font-weight:650}.opts button.sel{background:#d8e9f3;border-color:#527ca0}.sec{background:white;border:1px solid #e6edf3;border-radius:15px;margin:10px 0;overflow:hidden}.sec summary{list-style:none;display:flex;align-items:center;justify-content:space-between;padding:16px;cursor:pointer;font-weight:800;color:var(--navy)}.sec summary::-webkit-details-marker{display:none}.sec .inside{padding:0 15px 14px}.line{display:flex;align-items:center;gap:10px;border-top:1px solid #edf1f5;padding:10px 0}.line .name{flex:1;font-size:13px}.line .status{font-size:10px;color:#7e8da0}.line button{border:0;background:#f0f4f7;border-radius:9px;padding:9px;cursor:pointer;font-size:16px}.line button.good{color:var(--green);background:#e4f7ee}.line button.bad{color:var(--red);background:#ffeced}.progress{height:8px;background:#d7dfe6;border-radius:10px;overflow:hidden;margin:9px 0 20px}.progress b{display:block;height:100%;background:#26a486}.overlay{position:fixed;inset:0;background:#0e182bcc;z-index:9;display:grid;place-items:center;padding:12px}.modal{background:#fff;border-radius:18px;max-width:480px;width:100%;max-height:93vh;overflow:auto;padding:23px}.modal h2{margin-top:0}.modal label{font-weight:700;display:block}.muted{color:#728297}.listcard{background:#fff;border-radius:14px;border:1px solid #e4ecf2;margin:9px 0;padding:16px}.listcard b{display:block;margin-bottom:7px}.listcard .pill{display:inline-block;margin-bottom:8px}.alert{background:#fff4e2;color:#7d5600;border-radius:10px;padding:12px;font-size:12px;margin:16px 0}.endbar{position:sticky;bottom:70px;background:#fff;border-top:1px solid #e0e7ee;padding:12px;display:flex;gap:8px;justify-content:space-between;margin:20px -15px -10px}.endbar .button{flex:1}.caption{font-size:11px;color:#8794a5;margin:12px 0 0}@media(min-width:750px){nav{position:static;box-shadow:none}.endbar{bottom:0}}@media(max-width:400px){.stats{gap:6px}.stat{padding:9px}nav button{min-width:0;flex:1;padding:11px 5px}}
+@media print{header,nav,.endbar,.back,.button,.opts,.line button{display:none!important}body{background:#fff}main{padding:0}.sec:not([open]) .inside{display:block!important}.sec summary{font-size:13px}}
+</style></head><body><header><div class="head"><div class="brand"><span>✦</span> ERT INVENTORY</div><button onclick="setPage('home')">⌂ Accueil</button></div></header><main id="main"></main><nav id="nav"><button onclick="setPage('home')">🚒<br>Véhicules</button><button onclick="setPage('issues')">⚠<br>Anomalies</button><button onclick="setPage('history')">◷<br>Historique</button><button onclick="setPage('admin')">⚙<br>Admin</button></nav><div id="modal" style="display:none"></div>
+<script>
+const CATALOG={
+  "version": 1,
+  "source": "INVENTAIRES & CONTRÔLES DU PARC VEHICULES V2.pdf, pages 3 à 16",
+  "vehicles": [
+    {
+      "id": "VSAV",
+      "name": "VSAV",
+      "subtitle": "Véhicule de secours et d’assistance aux victimes",
+      "enabled": true,
+      "icon": "ambulance"
+    },
+    {
+      "id": "FPT",
+      "name": "FPT",
+      "subtitle": "Fourgon pompe-tonne",
+      "enabled": false,
+      "icon": "fire"
+    },
+    {
+      "id": "VPSID",
+      "name": "VPSID",
+      "subtitle": "Véhicule polyvalent",
+      "enabled": false,
+      "icon": "van"
+    },
+    {
+      "id": "VRE",
+      "name": "VRE",
+      "subtitle": "Véhicule réserve émulseur",
+      "enabled": false,
+      "icon": "van"
+    },
+    {
+      "id": "CCFM",
+      "name": "CCFM",
+      "subtitle": "Camion-citerne feux de forêts moyen",
+      "enabled": false,
+      "icon": "fire"
+    },
+    {
+      "id": "VIM",
+      "name": "VIM",
+      "subtitle": "Véhicule intervention mousse",
+      "enabled": false,
+      "icon": "fire"
+    },
+    {
+      "id": "CCFL1",
+      "name": "CCFL 1",
+      "subtitle": "Camion-citerne feux de forêts léger",
+      "enabled": false,
+      "icon": "van"
+    }
+  ],
+  "sections": [
+    {
+      "id": "cabine",
+      "title": "Cabine",
+      "source": "p. 5",
+      "items": [
+        {
+          "id": "cabine_01",
+          "label": "Classeur + plan du site",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "cabine_02",
+          "label": "Carnet fiches bilan + 2 stylos",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "cabine_03",
+          "label": "3 GHV",
+          "quantity": 3,
+          "active": true
+        },
+        {
+          "id": "cabine_04",
+          "label": "1 Projecteur",
+          "quantity": 1,
+          "active": true
+        },
+        {
+          "id": "cabine_05",
+          "label": "5 Masques chirurgicaux",
+          "quantity": 5,
+          "active": true
+        },
+        {
+          "id": "cabine_06",
+          "label": "1 Aniosgel",
+          "quantity": 1,
+          "active": true
+        },
+        {
+          "id": "cabine_07",
+          "label": "Triangle de pré-signalisation",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "cabine_08",
+          "label": "Raclette gel",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "cabine_09",
+          "label": "3 Casques F2",
+          "quantity": 3,
+          "active": true
+        },
+        {
+          "id": "cabine_10",
+          "label": "2 Sacs anti chute",
+          "quantity": 2,
+          "active": true
+        },
+        {
+          "id": "cabine_11",
+          "label": "1 Extincteur",
+          "quantity": 1,
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "lateral_conducteur",
+      "title": "Latéral conducteur",
+      "source": "p. 6",
+      "items": [
+        {
+          "id": "lateral_conducteur_01",
+          "label": "Brancard cuillère",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "lateral_conducteur_02",
+          "label": "Plan dur + support cale-tête",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "lateral_conducteur_03",
+          "label": "Chaise de transport",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "lateral_conducteur_04",
+          "label": "1 ACT",
+          "quantity": 1,
+          "active": true
+        },
+        {
+          "id": "lateral_conducteur_05",
+          "label": "1 Bouteille B11 O₂ 3 m³",
+          "quantity": 1,
+          "active": true
+        },
+        {
+          "id": "lateral_conducteur_06",
+          "label": "2 Cales de roue",
+          "quantity": 2,
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "cellule",
+      "title": "Cellule",
+      "source": "p. 7",
+      "items": [
+        {
+          "id": "cellule_01",
+          "label": "Brancard + support brancard",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "cellule_02",
+          "label": "Couverture",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "cellule_03",
+          "label": "MID",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "cellule_04",
+          "label": "4 Attelles à dépression",
+          "quantity": 4,
+          "active": true
+        },
+        {
+          "id": "cellule_05",
+          "label": "Aspirateur à mucosité + 1 sonde d’aspiration",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "cellule_06",
+          "label": "DAE",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "cellule_07",
+          "label": "Kit brûlure",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "cellule_08",
+          "label": "Kit membres sectionnés",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "cellule_09",
+          "label": "2 Colliers cervicaux",
+          "quantity": 2,
+          "active": true
+        },
+        {
+          "id": "cellule_10",
+          "label": "2 Cales tête",
+          "quantity": 2,
+          "active": true
+        },
+        {
+          "id": "cellule_11",
+          "label": "Sangle araignée",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "cellule_12",
+          "label": "Pompe",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "cellule_13",
+          "label": "3 Boîtes de gants (M/L/XL)",
+          "quantity": 3,
+          "active": true
+        },
+        {
+          "id": "cellule_14",
+          "label": "3 Kits de protection risque infectieux",
+          "quantity": 3,
+          "active": true
+        },
+        {
+          "id": "cellule_15",
+          "label": "Valise protections airbag",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "cellule_16",
+          "label": "Brise-vitre",
+          "quantity": null,
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "tiroir_1",
+      "title": "Tiroir 1 • Cellule",
+      "source": "p. 8",
+      "items": [
+        {
+          "id": "tiroir_1_01",
+          "label": "3 Lunettes de protection",
+          "quantity": 3,
+          "active": true
+        },
+        {
+          "id": "tiroir_1_02",
+          "label": "Kit AES",
+          "quantity": null,
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "tiroir_2",
+      "title": "Tiroir 2 • Cellule",
+      "source": "p. 9",
+      "items": [
+        {
+          "id": "tiroir_2_01",
+          "label": "2 Masques HC adulte",
+          "quantity": 2,
+          "active": true
+        },
+        {
+          "id": "tiroir_2_02",
+          "label": "2 Masques HC enfant",
+          "quantity": 2,
+          "active": true
+        },
+        {
+          "id": "tiroir_2_03",
+          "label": "2 Sacs aspirateur de mucosité",
+          "quantity": 2,
+          "active": true
+        },
+        {
+          "id": "tiroir_2_04",
+          "label": "1 Sonde d’aspiration",
+          "quantity": 1,
+          "active": true
+        },
+        {
+          "id": "tiroir_2_05",
+          "label": "1 Sachet raccord biconique 7/10 4/7",
+          "quantity": 1,
+          "active": true
+        },
+        {
+          "id": "tiroir_2_06",
+          "label": "1 Filtre PAL",
+          "quantity": 1,
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "tiroir_3",
+      "title": "Tiroir 3 • Cellule",
+      "source": "p. 9",
+      "items": [
+        {
+          "id": "tiroir_3_01",
+          "label": "1 CHU",
+          "quantity": 1,
+          "active": true
+        },
+        {
+          "id": "tiroir_3_02",
+          "label": "5 Dosettes NaCl",
+          "quantity": 5,
+          "active": true
+        },
+        {
+          "id": "tiroir_3_03",
+          "label": "5 Chlorexidines",
+          "quantity": 5,
+          "active": true
+        },
+        {
+          "id": "tiroir_3_04",
+          "label": "10 Compresses stériles",
+          "quantity": 10,
+          "active": true
+        },
+        {
+          "id": "tiroir_3_05",
+          "label": "5 Pansements américains",
+          "quantity": 5,
+          "active": true
+        },
+        {
+          "id": "tiroir_3_06",
+          "label": "1 Champ stérile",
+          "quantity": 1,
+          "active": true
+        },
+        {
+          "id": "tiroir_3_07",
+          "label": "2 Sparadraps",
+          "quantity": 2,
+          "active": true
+        },
+        {
+          "id": "tiroir_3_08",
+          "label": "5 Petites bandes",
+          "quantity": 5,
+          "active": true
+        },
+        {
+          "id": "tiroir_3_09",
+          "label": "5 Grandes bandes",
+          "quantity": 5,
+          "active": true
+        },
+        {
+          "id": "tiroir_3_10",
+          "label": "1 Paire de ciseaux",
+          "quantity": 1,
+          "active": true
+        },
+        {
+          "id": "tiroir_3_11",
+          "label": "1 Pince à épiler",
+          "quantity": 1,
+          "active": true
+        },
+        {
+          "id": "tiroir_3_12",
+          "label": "1 Garrot tourniquet",
+          "quantity": 1,
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "tiroir_4",
+      "title": "Tiroir 4 • Cellule",
+      "source": "p. 10",
+      "items": [
+        {
+          "id": "tiroir_4_01",
+          "label": "2 Couvertures de survie",
+          "quantity": 2,
+          "active": true
+        },
+        {
+          "id": "tiroir_4_02",
+          "label": "1 Poche de froid",
+          "quantity": 1,
+          "active": true
+        },
+        {
+          "id": "tiroir_4_03",
+          "label": "2 Écharpes",
+          "quantity": 2,
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "tiroir_5",
+      "title": "Tiroir 5 • Cellule",
+      "source": "p. 10",
+      "items": [
+        {
+          "id": "tiroir_5_01",
+          "label": "2 Draps UU",
+          "quantity": 2,
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "tiroir_6",
+      "title": "Tiroir 6 • Cellule",
+      "source": "p. 11",
+      "items": [
+        {
+          "id": "tiroir_6_01",
+          "label": "Boîtes de lingettes désinfectantes",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "tiroir_6_02",
+          "label": "Rouleau de sacs DASRI",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "tiroir_6_03",
+          "label": "Boîte à aiguilles",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "tiroir_6_04",
+          "label": "Aniospray",
+          "quantity": null,
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "tiroir_7",
+      "title": "Tiroir 7 • Cellule",
+      "source": "p. 11",
+      "items": [
+        {
+          "id": "tiroir_7_01",
+          "label": "Brancard souple",
+          "quantity": null,
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "tiroir_8",
+      "title": "Tiroir 8 • Cellule",
+      "source": "p. 11",
+      "items": [
+        {
+          "id": "tiroir_8_01",
+          "label": "Boîte de masques chirurgicaux",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "tiroir_8_02",
+          "label": "Boîte de masques FFP2",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "tiroir_8_03",
+          "label": "1 Urinal",
+          "quantity": 1,
+          "active": true
+        },
+        {
+          "id": "tiroir_8_04",
+          "label": "4 Sacs vomitoires",
+          "quantity": 4,
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "tiroir_9",
+      "title": "Tiroir 9 • Cellule",
+      "source": "p. 12",
+      "items": [
+        {
+          "id": "tiroir_9_01",
+          "label": "Kit Ambu adulte",
+          "quantity": null,
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "sac_avant",
+      "title": "Sac PS • Poche avant",
+      "source": "p. 13",
+      "items": [
+        {
+          "id": "sac_avant_01",
+          "label": "Tensiomètre électrique",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "sac_avant_02",
+          "label": "Brassard à tension",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "sac_avant_03",
+          "label": "Stéthoscope",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "sac_avant_04",
+          "label": "Oxymètre de pouls",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "sac_avant_05",
+          "label": "Thermomètre",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "sac_avant_06",
+          "label": "Lecteur glycémie + autopiqueurs + bandelettes + NaCl",
+          "quantity": null,
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "sac_droite",
+      "title": "Sac PS • Poche de droite",
+      "source": "p. 13",
+      "items": [
+        {
+          "id": "sac_droite_01",
+          "label": "5 Sacs DASRI",
+          "quantity": 5,
+          "active": true
+        },
+        {
+          "id": "sac_droite_02",
+          "label": "10 Paires de gants stériles",
+          "quantity": 10,
+          "active": true
+        },
+        {
+          "id": "sac_droite_03",
+          "label": "1 Collier cervical adulte",
+          "quantity": 1,
+          "active": true
+        },
+        {
+          "id": "sac_droite_04",
+          "label": "Boîte à aiguilles DASRI",
+          "quantity": null,
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "sac_gauche",
+      "title": "Sac PS • Poche de gauche",
+      "source": "p. 14",
+      "items": [
+        {
+          "id": "sac_gauche_01",
+          "label": "2 Masques HC enfant",
+          "quantity": 2,
+          "active": true
+        },
+        {
+          "id": "sac_gauche_02",
+          "label": "Boîte de canules de Guedel",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "sac_gauche_03",
+          "label": "Lot BAVU enfant",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "sac_gauche_04",
+          "label": "1 Collier cervical enfant",
+          "quantity": 1,
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "sac_bleue",
+      "title": "Sac PS • Pochette bleue",
+      "source": "p. 14",
+      "items": [
+        {
+          "id": "sac_bleue_01",
+          "label": "Boîte de canules de Guedel adulte",
+          "quantity": null,
+          "active": true
+        },
+        {
+          "id": "sac_bleue_02",
+          "label": "2 Masques HC adulte",
+          "quantity": 2,
+          "active": true
+        },
+        {
+          "id": "sac_bleue_03",
+          "label": "Lot BAVU adulte",
+          "quantity": null,
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "sac_rouge",
+      "title": "Sac PS • Pochette rouge",
+      "source": "p. 15",
+      "items": [
+        {
+          "id": "sac_rouge_01",
+          "label": "5 Dosettes NaCl",
+          "quantity": 5,
+          "active": true
+        },
+        {
+          "id": "sac_rouge_02",
+          "label": "5 Dosettes chlorhexidine",
+          "quantity": 5,
+          "active": true
+        },
+        {
+          "id": "sac_rouge_03",
+          "label": "10 Compresses stériles",
+          "quantity": 10,
+          "active": true
+        },
+        {
+          "id": "sac_rouge_04",
+          "label": "1 CHU",
+          "quantity": 1,
+          "active": true
+        },
+        {
+          "id": "sac_rouge_05",
+          "label": "2 Pansements américains",
+          "quantity": 2,
+          "active": true
+        },
+        {
+          "id": "sac_rouge_06",
+          "label": "1 Champ stérile",
+          "quantity": 1,
+          "active": true
+        },
+        {
+          "id": "sac_rouge_07",
+          "label": "1 Garrot tourniquet",
+          "quantity": 1,
+          "active": true
+        },
+        {
+          "id": "sac_rouge_08",
+          "label": "1 Sparadrap",
+          "quantity": 1,
+          "active": true
+        },
+        {
+          "id": "sac_rouge_09",
+          "label": "1 Paire de ciseaux",
+          "quantity": 1,
+          "active": true
+        },
+        {
+          "id": "sac_rouge_10",
+          "label": "5 Petites bandes",
+          "quantity": 5,
+          "active": true
+        },
+        {
+          "id": "sac_rouge_11",
+          "label": "5 Grandes bandes",
+          "quantity": 5,
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "sac_verte",
+      "title": "Sac PS • Pochette verte",
+      "source": "p. 15",
+      "items": [
+        {
+          "id": "sac_verte_01",
+          "label": "2 Écharpes",
+          "quantity": 2,
+          "active": true
+        },
+        {
+          "id": "sac_verte_02",
+          "label": "3 Sacs vomitoires",
+          "quantity": 3,
+          "active": true
+        },
+        {
+          "id": "sac_verte_03",
+          "label": "2 Poches de froid",
+          "quantity": 2,
+          "active": true
+        },
+        {
+          "id": "sac_verte_04",
+          "label": "2 Couvertures de survie",
+          "quantity": 2,
+          "active": true
+        },
+        {
+          "id": "sac_verte_05",
+          "label": "1 Brulstop 10 × 10 cm",
+          "quantity": 1,
+          "active": true
+        },
+        {
+          "id": "sac_verte_06",
+          "label": "1 Brulstop 20 × 20 cm",
+          "quantity": 1,
+          "active": true
+        },
+        {
+          "id": "sac_verte_07",
+          "label": "1 Brulstop 2,5 × 5 cm",
+          "quantity": 1,
+          "active": true
+        },
+        {
+          "id": "sac_verte_08",
+          "label": "1 Gel hydroalcoolique",
+          "quantity": 1,
+          "active": true
+        }
+      ]
+    }
+  ],
+  "controls": {
+    "fuel_options": [
+      "1/4",
+      "2/4",
+      "3/4",
+      "4/4"
+    ],
+    "o2_min": 0,
+    "o2_max": 10,
+    "co_next_check": "2026-11",
+    "body_options_source": "options carrosserie VSAV illisibles dans le PDF; constat et commentaire libre"
+  }
+};
+let memoryStore={}; function get(k,def){try{return JSON.parse(localStorage.getItem(k))??def}catch(e){return memoryStore[k]??def}}function save(k,v){memoryStore[k]=v;try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+let history=get('ertdemo_history',[]),issues=get('ertdemo_issues',[]),draft=get('ertdemo_draft',null),page='home',expanded='cabine';
+const $=id=>document.getElementById(id);const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function fmt(s){let d=new Date(s);return isNaN(d)?'—':d.toLocaleString('fr-FR')}
+function setPage(p){page=p;render();window.scrollTo(0,0)}function modal(body){$('modal').style.display='grid';$('modal').className='overlay';$('modal').innerHTML='<div class="modal">'+body+'</div>'}function closeModal(){$('modal').style.display='none';$('modal').innerHTML=''}
+function render(){document.querySelectorAll('#nav button').forEach((b,i)=>b.classList.toggle('active',['home','issues','history','admin'][i]===page));let m=$('main');if(page==='home')m.innerHTML=home();if(page==='survey')m.innerHTML=survey();if(page==='issues')m.innerHTML=issuesPage();if(page==='history')m.innerHTML=historyPage();if(page==='admin')m.innerHTML=adminPage()}
+function home(){let open=issues.filter(i=>i.status!=='resolved').length;return `<div class="hero"><div class="tag">CONTRÔLE DU PARC</div><h1>Prêts à intervenir.</h1><p>Inventaires rapides, anomalies précises.</p><div class="stats"><div class="stat">🚒<strong>7</strong><span>véhicules</span></div><div class="stat">✔<strong>${history.length}</strong><span>contrôles VSAV</span></div><div class="stat">⚠<strong>${open}</strong><span>anomalies</span></div></div></div>${draft?`<div class="alert">Contrôle en cours : ${esc(draft.agent)} • ${esc(draft.mode)}. <a href="#" onclick="setPage('survey');return false">Reprendre</a></div>`:''}<h2>Choisir un véhicule</h2><div class="grid">${CATALOG.vehicles.map(v=>`<div class="vehicle ${v.enabled?'':'disabled'}" onclick="choose('${v.id}')"><div class="icon">${v.id==='VSAV'?'🚑':'🚒'}</div><div class="info"><b>${esc(v.name)}</b><small>${v.enabled?'Contrôle disponible':'Intégration prévue'}</small></div><span class="pill ${v.enabled?'':'wait'}">${v.enabled?'PRÊT':'À VENIR'}</span></div>`).join('')}</div><p class="caption">APERÇU HTML LOCAL • Pas d'envoi Outlook automatique ni de synchronisation. Seul le VSAV est fonctionnel.</p>`}
+function choose(id){if(id!=='VSAV'){alert('Ce véhicule sera intégré après validation du VSAV.');return}if(draft){setPage('survey');return}modal(`<h2>🚑 Nouveau contrôle VSAV</h2><label>Nom et prénom de l’agent</label><input class="input" id="agent" placeholder="Ex. Julien Dupont" value="${esc(get('ertdemo_agent',''))}"><label>Type de contrôle</label><select class="input" id="mode"><option value="INVENTAIRE">Inventaire complet</option><option value="VERIFICATION">Vérification</option></select><div style="display:flex;gap:10px"><button class="button light" onclick="closeModal()">Annuler</button><button class="button" onclick="start()">Démarrer</button></div>`)}
+function start(){let a=$('agent').value.trim(),mode=$('mode').value;if(a.length<3){alert('Indique le nom et le prénom de l’agent.');return}save('ertdemo_agent',a);draft={id:Date.now().toString(36),agent:a,mode,vehicle:'VSAV',started:new Date().toISOString(),fuel:null,dashboard:null,dashboardNote:'',body:null,bodyNote:'',o2:null,co:null,coNote:'',items:{}};save('ertdemo_draft',draft);closeModal();setPage('survey')}
+function setField(k,v){draft[k]=v;save('ertdemo_draft',draft);renderSurveyKeep()}function setText(k,v){draft[k]=v;save('ertdemo_draft',draft)}function renderSurveyKeep(){render();let target=document.querySelector(`[data-section="${expanded}"]`);if(target)target.open=true}
+function opt(key,arr){return `<div class="opts">${arr.map(([v,l])=>`<button class="${draft[key]===v?'sel':''}" onclick="setField('${key}',${JSON.stringify(v).replace(/"/g,'&quot;')})">${esc(l)}</button>`).join('')}</div>`}
+function section(s){let items=s.items.filter(i=>i.active!==false),done=items.filter(i=>draft.items[i.id]).length,bad=items.filter(i=>draft.items[i.id]?.status==='anomaly').length;return `<details class="sec" data-section="${s.id}" ${expanded===s.id?'open':''} ontoggle="if(this.open)expanded='${s.id}'"><summary><span>▣ ${esc(s.title)}</span><span class="pill ${bad?'red':''}">${done}/${items.length}${bad?' • '+bad+' ⚠':''}</span></summary><div class="inside"><button class="button green" style="margin:3px 0 12px;padding:9px 13px" onclick="allOk('${s.id}')">✓ NOTHING TO REPORT</button>${items.map(i=>{let a=draft.items[i.id],isOk=a?.status==='ok',isBad=a?.status==='anomaly';return `<div class="line"><div class="name"><b>${esc(i.label)}</b><div class="status" style="color:${isBad?'#e15256':isOk?'#168a70':'#8693a3'}">${isBad?esc(a.type+' • '+a.note):isOk?'Conforme':'À vérifier'}</div></div><button class="${isOk?'good':''}" title="Conforme" onclick="mark('${i.id}')">✔</button><button class="${isBad?'bad':''}" title="Anomalie" onclick="problem('${i.id}')">⚠</button></div>`}).join('')}</div></details>`}
+function survey(){let items=CATALOG.sections.flatMap(s=>s.items).filter(i=>i.active!==false),count=items.filter(i=>draft.items[i.id]).length;return `<button class="back" onclick="setPage('home')">← Enregistrer et quitter</button><h1>🚑 VSAV • ${draft.mode==='INVENTAIRE'?'Inventaire':'Vérification'}</h1><div class="small">👨‍🚒 ${esc(draft.agent)} · Sauvegarde locale automatique</div>${draft.mode==='INVENTAIRE'?`<div class="progress"><b style="width:${count/items.length*100}%"></b></div><div class="small">${count} / ${items.length} lignes vérifiées</div>`:''}<div class="card" style="margin-top:17px"><h2 style="margin:0 0 16px">Vérifications générales</h2><b>Niveau de carburant</b>${opt('fuel',[['1/4','¼'],['2/4','½'],['3/4','¾'],['4/4','Plein']])}<b>Voyant / information au tableau de bord</b>${opt('dashboard',[['ok','Aucun'],['alert','Voyant présent']])}${draft.dashboard==='alert'?`<input class="input" placeholder="Préciser le(s) voyant(s)" value="${esc(draft.dashboardNote)}" oninput="setText('dashboardNote',this.value)">`:''}<b>Carrosserie et signalisation</b>${opt('body',[['ok','Conforme'],['alert','Anomalie']])}${draft.body==='alert'?`<textarea class="input" placeholder="Décrire la zone et le défaut" oninput="setText('bodyNote',this.value)">${esc(draft.bodyNote)}</textarea>`:''}${draft.mode==='INVENTAIRE'?`<b>Sac PS • Bouteille O₂ B5 : <span style="color:var(--green)">${draft.o2===null?'Non renseigné':draft.o2+'/10'}</span></b><input style="width:100%;accent-color:var(--green)" type="range" min="0" max="10" value="${draft.o2??0}" oninput="setField('o2',Number(this.value))"><br><b>Détecteur CO présent et fonctionnel ?</b><p class="small">Prochain contrôle indiqué : novembre 2026.</p>${opt('co',[['ok','Oui'],['alert','Non']])}${draft.co==='alert'?`<input class="input" placeholder="Absent ou autre problème ?" value="${esc(draft.coNote)}" oninput="setText('coNote',this.value)">`:''}`:''}</div>${draft.mode==='INVENTAIRE'?`<h2>Inventaire par compartiment</h2>${CATALOG.sections.map(section).join('')}`:''}<div class="endbar"><button class="button light" onclick="setPage('home')">Sauver et quitter</button><button class="button red" onclick="finish()">Terminer le contrôle →</button></div>`}
+function mark(id){draft.items[id]={status:'ok'};save('ertdemo_draft',draft);renderSurveyKeep()}
+function allOk(id){let s=CATALOG.sections.find(s=>s.id===id),bad=s.items.some(i=>draft.items[i.id]?.status==='anomaly');if(bad&&!confirm('Cette action va remplacer les anomalies saisies dans ce compartiment. Continuer ?'))return;s.items.filter(i=>i.active!==false).forEach(i=>draft.items[i.id]={status:'ok'});save('ertdemo_draft',draft);renderSurveyKeep()}
+function problem(id){let entry=CATALOG.sections.flatMap(s=>s.items.map(i=>({section:s.title,...i}))).find(i=>i.id===id),old=draft.items[id]??{};modal(`<h2>⚠ Signaler une anomalie</h2><p><b>${esc(entry.label)}</b><br><span class="muted">${esc(entry.section)}</span></p><label>Type de problème</label><select class="input" id="type">${['Manquant','Défectueux','Périmé','Autre'].map(t=>`<option ${old.type===t?'selected':''}>${t}</option>`).join('')}</select><label>Quantité présente (si connue) • attendu : ${entry.quantity??'non précisé'}</label><input class="input" id="qty" type="number" min="0" value="${esc(old.present??'')}"><label>Observation *</label><textarea class="input" id="obs" rows="4" placeholder="Préciser le défaut et ses conséquences">${esc(old.note??'')}</textarea><label>Photo(s) du matériel (non sauvegardées en démo)</label><input type="file" multiple accept="image/*" class="input" id="pics"><p class="caption">Dans cette démo HTML, les photos ne sont ni conservées ni utilisées ; elles seront gérées par l’application Android.</p><button class="button red" onclick="saveProblem('${id}')">Enregistrer l'anomalie</button> <button class="button light" onclick="closeModal()">Annuler</button>`)}
+function saveProblem(id){let note=$('obs').value.trim();if(!note){alert('Renseigne une observation précise.');return}let p=$('qty').value.trim();if(p&&(Number(p)<0||!Number.isInteger(Number(p)))){alert('Quantité invalide.');return}draft.items[id]={status:'anomaly',type:$('type').value,note,present:p===''?null:Number(p)};save('ertdemo_draft',draft);closeModal();renderSurveyKeep()}
+function findingsFrom(d){let a=[];CATALOG.sections.forEach(s=>s.items.forEach(i=>{let v=d.items[i.id];if(v?.status==='anomaly')a.push({key:i.id,location:s.title,title:i.label,...v})}));for(let [key,title,kind,note] of [['dashboard','Voyant / tableau de bord','Autre','dashboardNote'],['body','Carrosserie / signalisation','Défectueux','bodyNote'],['co','Détecteur CO','Défectueux / absent','coNote']]){if(d[key]==='alert'&&(key!=='co'||d.mode==='INVENTAIRE'))a.push({key:'CTRL_'+key.toUpperCase(),location:'Vérifications',title,type:kind,note:d[note]??''})}return a}
+function finish(){let a=findingsFrom(draft),items=CATALOG.sections.flatMap(s=>s.items).filter(i=>i.active!==false),n=(draft.fuel===null?1:0)+(draft.dashboard===null?1:0)+(draft.body===null?1:0)+(draft.mode==='INVENTAIRE'?items.filter(i=>!draft.items[i.id]).length+(draft.o2===null?1:0)+(draft.co===null?1:0):0);if(n&&!confirm(`${n} point(s) non vérifié(s). Enregistrer quand même comme contrôle PARTIEL ?`))return;let now=new Date().toISOString(),fresh=0;const values=a.map(f=>{let old=issues.find(i=>i.key===f.key&&i.type===f.type&&i.status!=='resolved');if(old){old.confirmations++;old.updated=now;return {...f,existing:true}}issues.unshift({...f,status:'open',vehicle:'VSAV',created:now,updated:now,confirmations:1});fresh++;return {...f,existing:false}});history.unshift({...draft,completed:now,findings:values,missingCount:n,newIssues:fresh});save('ertdemo_issues',issues);save('ertdemo_history',history);draft=null;save('ertdemo_draft',null);setPage('history');alert(`Contrôle enregistré. ${a.length} anomalie(s), dont ${fresh} nouvelle(s). ${n?'Contrôle partiel.':'Contrôle complet.'}`)}
+function issuesPage(){let rows=issues.filter(i=>i.status!=='resolved');return `<h1>⚠ Suivi des anomalies</h1><p class="small">Un défaut identique signalé une nouvelle fois reste rattaché au même incident.</p>${rows.length?rows.map(i=>`<div class="listcard"><span class="pill red">${esc(i.status==='in_progress'?'EN COURS':'OUVERTE')}</span><b>${esc(i.title)}</b><p>${esc(i.location)} • ${esc(i.type)}</p><p>${esc(i.note)}</p><span class="small">Depuis ${fmt(i.created)} • ${i.confirmations} constat(s)</span></div>`).join(''):'<div class="card" style="text-align:center;padding:35px">✅ Aucune anomalie ouverte</div>'}`}
+function historyPage(){return `<h1>◷ Historique des contrôles</h1><p class="small">Données sauvegardées dans ce navigateur. Aucun rapport n'est transmis automatiquement.</p>${history.length?history.map((h,idx)=>`<div class="listcard"><span class="pill">${esc(h.mode)}</span> <span class="pill ${h.findings.length?'red':''}">${h.findings.length} anomalie(s)</span><b>${esc(h.vehicle)} — ${esc(h.agent)}</b><p class="small">${fmt(h.completed)} • ${h.missingCount} non vérifié(s)</p><button class="button light" onclick="showReport(${idx})">Voir rapport</button></div>`).join(''):'<div class="card" style="text-align:center;padding:35px">Aucun contrôle enregistré</div>'}`}
+function showReport(i){let h=history[i];let html=`<h2>Rapport ${esc(h.vehicle)}</h2><p>Agent : ${esc(h.agent)}<br>Date : ${fmt(h.completed)}<br>Opération : ${esc(h.mode)}</p><p><b>${h.findings.length} anomalie(s) — ${h.missingCount} non vérifié(s)</b></p>${h.findings.map((f,j)=>`<div class="listcard"><b>${j+1}. ${esc(f.title)}</b><p>${esc(f.location)} • ${esc(f.type)}<br>${esc(f.note)}</p><span class="small">${f.existing?'Déjà signalée':'Nouvelle'}</span></div>`).join('')}<p class="caption">Pour envoyer un vrai PDF avec ses photos, utiliser la version Android après compilation.</p><button class="button" onclick="window.print()">Imprimer / PDF</button> <button class="button light" onclick="closeModal()">Fermer</button>`;modal(html)}
+function adminPage(){return `<h1>⚙ Administration</h1><div class="card"><h2>Code administrateur</h2><p>Dans le projet Flutter, l'administration locale permet de modifier les listes VSAV et de clôturer une anomalie avec un code de démonstration.</p><p>⚠ <b>Pour 27 agents, la sécurité et les droits devront impérativement être gérés côté serveur.</b></p><button class="button light" onclick="alert('À tester dans le projet Android Flutter. Ce prototype HTML n’implémente pas les droits d’accès.')">Aperçu limité</button></div><h2>À intégrer ensuite</h2><div class="card">Synchronisation partagée des contrôles • authentification administrateur côté serveur • rapport automatique Outlook/Power Automate • inventaires des six autres véhicules</div>`}
+render();
+</script></body></html>
