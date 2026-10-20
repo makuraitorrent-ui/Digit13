@@ -14,24 +14,20 @@ jobs:
     steps:
       - name: Recuperer les fichiers du depot
         uses: actions/checkout@v4
-
       - name: Extraire le projet Flutter
         run: unzip -oq ERT_Inventory_V1_Projet_Android.zip
-
       - name: Installer Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-
       - name: Creer les fichiers Android
         run: flutter create --platforms android --org org.ert --no-pub .
-
       - name: Installer les dependances
         run: flutter pub get
-
+      - name: Generer l'icone ERT
+        run: dart run flutter_launcher_icons
       - name: Compiler APK de test
         run: flutter build apk --debug
-
       - name: Mettre l'APK a disposition
         uses: actions/upload-artifact@v4
         with:
