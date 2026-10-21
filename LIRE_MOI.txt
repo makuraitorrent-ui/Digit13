@@ -1,0 +1,8 @@
+ERT INVENTORY V4.3 — LOGO & ECRAN DE CHARGEMENT
+
+1. Conserve une copie de ta version actuelle.
+2. Décompresse le ZIP.
+3. Sur GitHub Digit1312, mets les fichiers du pack à la RACINE du dépôt (pas dans un sous-dossier). Remplace index.html, icon-192.png, icon-512.png, manifest.webmanifest, sw.js et ajoute apple-touch-icon.png, favicon.png, ecran-chargement.jpg.
+4. Commit changes ; attends la publication Vercel.
+5. Android/iPhone : si l’ancienne icône persiste, supprimer seulement le raccourci/l’application installée depuis l’écran d’accueil puis la réinstaller depuis le site (ne supprime pas de données navigateur sans sauvegarde).
+Aucun SQL nécessaire. Ce pack modifie uniquement le logo, les icônes et l’écran de lancement visuel. Le vrai écran de démarrage natif dépend aussi d’Android/iOS et du navigateur.
