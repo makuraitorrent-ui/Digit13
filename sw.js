@@ -1,4 +1,4 @@
-const CACHE='ginasservis-static-v3-7-4';
+const CACHE='ginasservis-static-v3-9-0';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon.png','./icon-512.png','./logo-gina.jpg','./logo-var.jpg','./viking-detoure.png'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)));self.skipWaiting();});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('ginasservis-static-')&&k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim();});
